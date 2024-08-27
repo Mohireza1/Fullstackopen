@@ -20,6 +20,11 @@ const App = () => {
     bad: ["Awful", 0],
   });
 
+  const voteNums = [feedback.good[1], feedback.neutral[1], feedback.bad[1]];
+  const totalVotes = voteNums.reduce((curr, vote) => curr + vote, 0);
+  const score = (voteNums[0] - voteNums[2]) / totalVotes;
+  const posPercent = (voteNums[0] / totalVotes) * 100;
+
   // Accepts a vote and increases it.
   const voteIncease = (state) => {
     setFeedback({
@@ -41,6 +46,9 @@ const App = () => {
       <Vote feedback={feedback} option={"good"} />
       <Vote feedback={feedback} option={"neutral"} />
       <Vote feedback={feedback} option={"bad"} />
+      <p>Total: {totalVotes}</p>
+      <p>Score: {isNaN(score) ? 0 : score.toFixed(2)}</p>
+      <p>Positive Percent: {isNaN(posPercent) ? 0 : posPercent.toFixed(2)}%</p>
     </div>
   );
 };
