@@ -1,10 +1,7 @@
 import { useState } from "react";
-
-const Entry = ({ person }) => (
-  <p>
-    {person.name}: {person.num}
-  </p>
-);
+import Entry from "./components/Entry";
+import Form from "./components/Form";
+import Search from "./components/Search";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -23,49 +20,19 @@ const App = () => {
       ? persons.filter((per) => per.name.toLowerCase().includes(searchPhrase))
       : persons;
 
-  const handleName = (e) => {
-    setNewName(e.target.value);
-  };
-  const handleNum = (e) => {
-    setNewNum(e.target.value);
-  };
-
-  const addPerson = (e) => {
-    e.preventDefault();
-    const nameObj = {
-      name: newName,
-      num: String(newNum),
-      key: persons.length + 1,
-    };
-
-    if (persons.filter((person) => person.name === nameObj.name).length > 0) {
-      alert(`${nameObj.name} already exists!`);
-    } else {
-      setPersons(persons.concat(nameObj));
-    }
-  };
-
-  const search = (e) => {
-    setSearchPhrase(e.target.value.toLowerCase());
-  };
-
   return (
     <div>
       <h2>Phonebook</h2>
-      search: <input onChange={search}></input>
+      <Search setSearchPhrase={setSearchPhrase} />
       <h2>Add New</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleName} />
-          <br />
-          number: <input value={newNum} onChange={handleNum} />
-        </div>
-        <div>
-          <button type="submit" onClick={addPerson}>
-            add
-          </button>
-        </div>
-      </form>
+      <Form
+        setNewName={setNewName}
+        newName={newName}
+        setNewNum={setNewNum}
+        newNum={newNum}
+        setPersons={setPersons}
+        persons={persons}
+      />
       <h2>Numbers</h2>
       {results.map((per) => (
         <Entry key={per.key} person={per} />
