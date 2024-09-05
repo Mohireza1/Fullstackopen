@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Entry = ({ person }) => <p key={person.key}>{person.name}</p>;
+const Entry = ({ person }) => <p>{person.name}</p>;
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas", key: 1 }]);
@@ -8,14 +8,17 @@ const App = () => {
 
   const handleName = (e) => {
     setNewName(e.target.value);
-    console.log(e.target.value);
   };
 
   const addPerson = (e) => {
     e.preventDefault();
     const nameObj = { name: newName, key: persons.length + 1 };
 
-    setPersons(persons.concat(nameObj));
+    if (persons.filter((person) => person.name === nameObj.name).length > 0) {
+      alert(`${nameObj.name} already exists!`);
+    } else {
+      setPersons(persons.concat(nameObj));
+    }
   };
 
   return (
@@ -33,7 +36,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {persons.map((per) => (
-        <Entry person={per} />
+        <Entry key={per.key} person={per} />
       ))}
     </div>
   );
