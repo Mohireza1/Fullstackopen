@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Entry from "./components/Entry";
 import Form from "./components/Form";
 import Search from "./components/Search";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", num: "040-123456", key: 1 },
-    { name: "Ada Lovelace", num: "39-44-5323523", key: 2 },
-    { name: "Dan Abramov", num: "12-43-234345", key: 3 },
-    { name: "Mary Poppendieck", num: "39-23-6423122", key: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then((result) => setPersons(result.data));
+  }, []);
   const [newName, setNewName] = useState("");
   const [newNum, setNewNum] = useState("");
 
@@ -35,7 +36,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       {results.map((per) => (
-        <Entry key={per.key} person={per} />
+        <Entry key={per.id} person={per} />
       ))}
     </div>
   );
